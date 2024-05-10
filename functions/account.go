@@ -20,6 +20,18 @@ type AllAccount struct {
 func RetrieveAllAccount(ctx *gin.Context) {
 	users := []AllAccount{}
 	pointer := AllAccount{}
+	token := ctx.Param("token")
+
+	claims := ValidateGetUserToken(token)
+
+	if claims == nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"status":  "failed",
+			"message": "must login first",
+		})
+		return
+	}
+
 	res, err := database.Db.Query(`
 	select 
 	us.userid, 
