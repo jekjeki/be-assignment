@@ -23,6 +23,7 @@ func LoginUser(ctx *gin.Context) {
 	userdata := User{}
 
 	if err != nil {
+		fmt.Println(err.Error())
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
 			"message": err.Error(),
@@ -33,6 +34,7 @@ func LoginUser(ctx *gin.Context) {
 	err = json.Unmarshal(data, &userdata)
 
 	if err != nil {
+		fmt.Println(err.Error())
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
 			"message": err.Error(),
@@ -48,10 +50,11 @@ func LoginUser(ctx *gin.Context) {
 	`, userdata.Userid, userdata.Userpassword)
 
 	if err_query != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"status":  "error",
-			"message": err.Error(),
-		})
+		fmt.Println(err_query.Error())
+		// ctx.JSON(http.StatusBadRequest, gin.H{
+		// 	"status":  "error",
+		// 	"message": err.Error(),
+		// })
 		return
 	}
 
@@ -60,6 +63,7 @@ func LoginUser(ctx *gin.Context) {
 		err_query = res.Scan(&pointer.Userid, &pointer.Userpassword)
 
 		if err_query != nil {
+			fmt.Println(err_query.Error())
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"status":  "error",
 				"message": err_query.Error(),

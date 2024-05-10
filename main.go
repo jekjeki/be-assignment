@@ -22,9 +22,9 @@ func main() {
 
 	route.POST("/login", functions.LoginUser)
 	route.POST("/send", functions.AddNewTransaction)
-	route.GET("/users", functions.RetrieveAllAccount)
-	route.GET("/transactions/:userid", functions.GetTransacctionPerAccount)
-	route.PATCH("/withdraw/:accountno", functions.WithdrawBalance)
+	route.GET("/users/:token", functions.RetrieveAllAccount)
+	route.GET("/transactions/:userid/:token", functions.GetTransacctionPerAccount)
+	route.PATCH("/withdraw/:accountno/:token", functions.WithdrawBalance)
 
 	err := route.Run(":8080")
 	if err != nil {

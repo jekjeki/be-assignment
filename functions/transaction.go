@@ -163,8 +163,20 @@ func ValidateGetUserToken(token string) jwt.MapClaims {
 // get transactions per account
 func GetTransacctionPerAccount(ctx *gin.Context) {
 	userid := ctx.Param("userid")
+	token := ctx.Param("token")
 	pointer := Transactions{}
 	transactions := []Transactions{}
+
+	// check has a token
+	claims := ValidateGetUserToken(token)
+
+	if claims == nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "must login",
+		})
+		return
+	}
 
 	res, err := database.Db.Query(`
 	select 
@@ -215,6 +227,7 @@ func GetTransacctionPerAccount(ctx *gin.Context) {
 // withdraw
 func WithdrawBalance(ctx *gin.Context) {
 	accountno := ctx.Param("accountno")
+	token := ctx.Param("token")
 	withdrawdata := WithdrawData{}
 	data, err := ctx.GetRawData()
 
@@ -232,6 +245,16 @@ func WithdrawBalance(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
 			"message": "cant marshal data",
+		})
+		return
+	}
+
+	claims := ValidateGetUserToken(token)
+
+	if claims == nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "must login first",
 		})
 		return
 	}
