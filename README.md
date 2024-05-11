@@ -1,5 +1,6 @@
 # Take home assignment
 
+# the solving description placed on README_solve (noted)
 
 ## Description:
 Build 2 Backend services which manages user’s accounts and transactions (send/withdraw). 
